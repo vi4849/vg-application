@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h1>To Do List</h1>
+<h2>By: Vivian Gao </h2>
+
+<p>Click the buttons to add /remove items to your to-do list!</p>
+
+<button onclick="addItem()">Add Item</button>
+<button onclick="removeItem()">Remove Item</button>
+<button onclick="editItem()">Edit Item</button>
+<button onclick="changeOrder()">Change Order</button>
+
+<p id="tasks"></p>
+
+<script>
+let array = [];
+let index = 0;
+
+function addItem() {
+  let name = prompt("Please enter the name of your task"); //to allow user to input fields
+  let description = prompt("Please enter the description of your task");
+  let startDate = prompt("Please enter the start date of your task");
+  let dueDate = prompt("Please enter the due date of your task");
+  let status = prompt("Please enter the status of your task (New, Working On, or Finished)");
+
+  if (name != null) { //check that task name is not empty
+    //make comparison case-insensitive b by converting string to lowercase
+    const compareValue1 = status.toLowerCase().localeCompare("new"); 
+    const compareValue2 = status.toLowerCase().localeCompare("working on");
+    const compareValue3 = status.toLowerCase().localeCompare("finished");
+    if(compareValue1!==0 && compareValue2!==0 && compareValue3!==0)
+        alert("The status that you input was incorrect");
+
+    else{
+        const para = document.createElement("p"); //create a new p within the tasks p
+        para.id = index.toString(); //set the id to be the index (starts from 0)
+
+        const node = document.createTextNode("[Task: " + name + 
+            "] [Description: " + description + 
+            "] [Start Date: " + startDate + 
+            "] [Due Date: " + dueDate + 
+            "] [Status: " + status + "]");
+        para.appendChild(node); //add inputs to the html file
+        const element = document.getElementById("tasks");
+        element.appendChild(para);
+        index++; //update the index
+
+        array.push ("[Task: " + name + 
+            "] [Description: " + description + 
+            "] [Start Date: " + startDate + 
+            "] [Due Date: " + dueDate + 
+            "] [Status: " + status + "]") //add the value to the array
+    }
+  }
+}
+
+function removeItem() {
+  let name = prompt("Please enter the name of the task you would like to remove");
+  let location = -1;
+  for (let i = array.length - 1; i >= 0; i -= 1) { //find the task within the array
+        if(array[i].includes(name))
+        {
+            location = i;
+        }
+  }
+  if (name != null && location!=-1) { //remove an element if it exists in the array
+    const removedTask = document.getElementById(location.toString()); //remove from html
+    removedTask.remove();
+
+    array.splice(array[location],1); //remove from array
+    index--; //decrement index
+  }
+}
+
+function editItem() {
+  let name = prompt("Please enter the name of the task you would like to edit");
+  let location = -1;
+  for (let i = array.length - 1; i >= 0; i -= 1) { //find the task within the array
+        if(array[i].includes(name))
+        {
+            location = i;
+        }
+  }
+
+  if (name != null && location!=-1) { //remove an element if it exists in the array
+    let name = prompt("Please enter the changed name of your task"); //to allow user to input fields
+    let description = prompt("Please enter the changed description of your task");
+    let startDate = prompt("Please enter the changed start date of your task");
+    let dueDate = prompt("Please enter the changed due date of your task");
+    let status = prompt("Please enter the changed status of your task (New, Working On, or Finished)");
+
+    //make comparison case-insensitive by converting string to lowercase
+    const compareValue1 = status.toLowerCase().localeCompare("new"); 
+    const compareValue2 = status.toLowerCase().localeCompare("working on");
+    const compareValue3 = status.toLowerCase().localeCompare("finished");
+
+    if(compareValue1!==0 && compareValue2!==0 && compareValue3!==0)
+      alert("The status that you input was incorrect");
+
+      else{        
+        const modifiedTask = document.getElementById(location.toString()); //remove from html
+        modifiedTask.textContent = ("[Task: " + name + 
+            "] [Description: " + description + 
+            "] [Start Date: " + startDate + 
+            "] [Due Date: " + dueDate + 
+            "] [Status: " + status + "]");
+
+        array[location] = ("[Task: " + name + 
+            "] [Description: " + description + 
+            "] [Start Date: " + startDate + 
+            "] [Due Date: " + dueDate + 
+            "] [Status: " + status + "]"); //update the value in the array
+       }
+    }
+  }
+
+  function changeOrder()
+  {
+    let name = prompt("Please enter the name of the task you would like to change the order for");
+    let oldLocation = -1;
+    for (let i = array.length - 1; i >= 0; i -= 1) { //find the task within the array
+          if(array[i].includes(name))
+          {
+            oldLocation = i;
+          }
+    }
+
+    if (name != null && oldLocation!=-1) { //remove an element if it exists in the array
+      let newLocation = prompt("Please enter where you would like to put this task (ex. 1 for moving it to the top of the list)");
+      newLocation= newLocation-1; //to make the value correspond to array values
+
+      if(newLocation>=0) //check to make sure that the location is within bounds
+      {
+        let temp = array[newLocation];
+        array[newLocation] = array[oldLocation];
+        array[oldLocation] = temp;
+
+        const modifiedTask = document.getElementById(oldLocation.toString()); //remove from html
+        modifiedTask.textContent = (array[oldLocation]);
+        
+        const modifiedTask1 = document.getElementById(newLocation.toString()); //remove from html
+        modifiedTask1.textContent = (array[newLocation]);
+      
+      }
+      else
+      {
+        alert("You cannot move this task to that location.")
+      }
+    }
+  }
+</script>
+
+</body>
+</html>
